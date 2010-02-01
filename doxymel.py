@@ -9,13 +9,13 @@ DOX_TAG = "{http://www.ayatana.org/dbus/dox.dtd}d"
 def printDox(element):
     print "/**"
     for line in element.findtext(DOX_TAG, "").splitlines():
-        print " * " + line
+        print line
 
     for arg in element.findall("arg"):
         name = arg.attrib.get("name")
         direction = arg.attrib.get("direction")
         doc = arg.findtext(DOX_TAG, "")
-        print " * @param[%s] %s %s" % (direction, name, doc)
+        print "@param[%s] %s %s" % (direction, name, doc)
 
     print " */"
 
