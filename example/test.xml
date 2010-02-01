@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+A library to allow applictions to provide simple indications of
+information to be displayed to users of the application through the
+interface shell.
+
+Copyright 2009 Canonical Ltd.
+
+Authors:
+    Ted Gould <ted@canonical.com>
+    Aurelien Gateau <ted@canonical.com>
+
+This program is free software: you can redistribute it and/or modify it 
+under the terms of either or both of the following licenses:
+
+1) the GNU Lesser General Public License version 3, as published by the 
+Free Software Foundation; and/or
+2) the GNU Lesser General Public License version 2.1, as published by 
+the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranties of 
+MERCHANTABILITY, SATISFACTORY QUALITY or FITNESS FOR A PARTICULAR 
+PURPOSE.  See the applicable version of the GNU Lesser General Public 
+License for more details.
+
+You should have received a copy of both the GNU Lesser General Public 
+License version 3 and version 2.1 along with this program.  If not, see 
+<http://www.gnu.org/licenses/>
+-->
+<node name="/" xmlns:dox="http://www.ayatana.org/dbus/dox.dtd">
+	<interface name="org.ayatana.dbusmenu">
+		<dox:d><![CDATA[
+The goal of this DBus interface is to be able to pass menu items through DBus.
+
+Items are represented with a unique numeric id and a dictionary of properties.
+
+Available properties are:
+
+@li @c type @c string Type of the item (see below)
+@li @c label @c string Text of the item
+@li @c icon-data @c binary Raw data of the icon (TODO: define format)
+@li @c icon @c string Icon name of the item, following icon spec
+@li @c sensitive @c boolean Whether the item can be activated or not
+@li @c checked @c boolean Whether a checkbox or radio item is checked
+@li @c shortcut @c string The keyboard shortcut
+
+Vendor specific properties can be added by prefixing them with "x-<vendor>-"
+
+@c type property is an enum which can take the following values:
+
+@li action An item which can be clicked to trigger an action
+@li checkbox An item which can be checked or unchecked
+@li radio An item which can be checked or unchecked as part of a group
+@li separator A separator
+@li menu An item which contains more items
+
+Vendor specific types can be added by prefixing them with "x-<vendor>-"
+		]]></dox:d>
+
+		<method name="GetChildren">
+			<annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="X11MenuItemList"/>
+			<dox:d><![CDATA[
+Returns the list of items which are children of @a parentId.
+
+An item is represented as a struct following this format:
+@li id unsigned the item id
+@li properties map(string => variant) the requested item properties
+			]]></dox:d>
+
+			<arg type="u" name="parentId" direction="in">
+				<dox:d>the parent id for the list. If it is 0, returns the root item list</dox:d>
+			</arg>
+			<arg type="as" name="propertyNames" direction="in">
+				<dox:d>the list of item properties we are interested in</dox:d>
+			</arg>
+			<arg type="a(ua{sv})" name="children" direction="out" />
+		</method>
+
+		<method name="GetProperty">
+			<dox:d><![CDATA[
+Returns the value of an item property.
+			]]></dox:d>
+			<arg type="u" name="id" direction="in">
+				<dox:d>the id of the item.</dox:d>
+			</arg>
+			<arg type="s" name="name" direction="in">
+				<dox:d>the name of the property.</dox:d>
+			</arg>
+			<arg type="v" name="value" direction="out">
+				<dox:d>the value of the property.</dox:d>
+			</arg>
+		</method>
+
+		<method name="GetProperties">
+			<dox:d><![CDATA[
+Returns multiple properties in one call. This is more efficient than
+GetProperty.
+			]]></dox:d>
+			<annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+			<arg type="u" name="id" direction="in">
+				<dox:d>the item whose properties we want to retrieve.</dox:d>
+			</arg>
+			<arg type="as" name="names" direction="in">
+				<dox:d>name of the properties we want.</dox:d>
+			</arg>
+			<arg type="a{sv}" name="values" direction="out">
+				<dox:d>values of the requested properties.</dox:d>
+			</arg>
+		</method>
+
+		<method name="Event">
+<dox:d><![CDATA[
+This is called by the applet to notify the application an event happened on a
+menu item.
+
+@a type can be one of the following:
+
+@li "clicked"
+@li "hovered"
+
+Vendor specific events can be added by prefixing them with "x-<vendor>-"
+
+Application can use the "hovered" event to fill menu on the fly and emit the
+ChildrenUpdated() signal.
+]]></dox:d>
+			<arg type="u" name="id" direction="in" >
+				<dox:d>the id of the item which recieved the event</dox:d>
+			</arg>
+			<arg type="s" name="type" direction="in" >
+				<dox:d>the event type</dox:d>
+			</arg>
+			<arg type="v" name="data" direction="in" >
+				<dox:d>event-specific data</dox:d>
+			</arg>
+		</method>
+
+<!-- Signals -->
+		<signal name="ItemPropertyUpdated">
+<dox:d><![CDATA[
+Triggered by the application to notify the applet that the property @a property
+from item @a id has changed to @a value.
+]]></dox:d>
+			<arg type="u" name="id" direction="out" />
+			<arg type="s" name="prop" direction="out" />
+			<arg type="v" name="value" direction="out" />
+		</signal>
+
+		<signal name="ItemUpdated">
+<dox:d><![CDATA[
+Triggered by the application to notify the applet all properties of item
+@a id should be considered outdated
+]]></dox:d>
+			<arg type="u" name="id" direction="out" />
+		</signal>
+
+		<signal name="ChildrenUpdated">
+<dox:d><![CDATA[
+Triggered by the application to notify applet it should retrieve the children
+for item @a id.
+]]></dox:d>
+			<arg type="u" name="id" direction="out" />
+		</signal>
+
+<!-- End of interesting stuff -->
+
+	</interface>
+</node>
