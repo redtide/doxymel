@@ -86,7 +86,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ..
+INPUT                  = .
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.xml
 RECURSIVE              = NO
@@ -98,8 +98,8 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       =
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             =
-INPUT_FILTER           = doxymel.py
-FILTER_PATTERNS        = *.xml=doxymel.py
+INPUT_FILTER           = doxymel
+FILTER_PATTERNS        = *.xml=doxymel
 FILTER_SOURCE_FILES    = NO
 #---------------------------------------------------------------------------
 # configuration options related to source browsing
