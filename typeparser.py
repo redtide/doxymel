@@ -2,6 +2,10 @@ def formatType(type):
     lst = sig_to_type_list(type)
     return "".join(lst)
 
+"""
+Following code is a modified version of dbus_utils.py, d-feet source code
+"""
+
 def convert_complex_type(subsig):
     result = None
     len_consumed = 0
@@ -25,26 +29,26 @@ def convert_complex_type(subsig):
 
         (r, lc) = convert_complex_type(ss)
         if r:
-            subtypelist = [key] + r
+            subtypelist = [key, r]
             len_consumed += lc + 1
         else:
             value = convert_simple_type(ss[0])
             subtypelist = [key, value]
             len_consumed += 1
 
-        result = ['Dict<' + ','.join(subtypelist) + '>']
+        result = 'Dict<' + ','.join(subtypelist) + '>'
 
     elif c == 'a':                       # handle an array 
         ss = subsig[1:]
         (r, lc) = convert_complex_type(ss)
         if r:
-            subtypelist = r
+            subtypelist = [r]
             len_consumed = lc + 1
         else:
             subtypelist = sig_to_type_list(ss[0])
             len_consumed = 1
 
-        result = ['Array<' + ','.join(subtypelist) + '>']
+        result = 'Array<' + ','.join(subtypelist) + '>'
     elif c == '(':                       # handle structs
         # iterate over sig until paren_count == 0
         paren_count = 1
@@ -61,7 +65,7 @@ def convert_complex_type(subsig):
         
         len_consumed = i
         ss = ss[0:i-1]
-        result = ['Struct<' + ','.join(sig_to_type_list(ss)) + '>']
+        result = 'Struct<' + ','.join(sig_to_type_list(ss)) + '>'
 
     return (result, len_consumed)
 
