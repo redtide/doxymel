@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import sys
-import re
 from optparse import OptionParser
 from xml.etree import ElementTree as ET
+
+import typeparser
 
 DOX_TAG = "{http://www.ayatana.org/dbus/dox.dtd}d"
 
@@ -27,39 +28,12 @@ def printMethodDox(element):
 
     print " */"
 
-dictRx = re.compile("a{" \
-    + "(.)" # key \
-    + "([^}]+)" # value \
-    + "}")
-
-arrayStructRx = re.compile("a\(" \
-    + "([^)]+)" # key \
-    + "\)")
-
-arraySimpleRx = re.compile("a(.)")
-
-structRx = re.compile("\("
-    + "([^)]+)" # key \
-    + "\)")
-
-def formatType(type):
-    # FIXME: replace with proper parser
-    type = dictRx.sub(r"D<\1,\2>", type)
-    type = arrayStructRx.sub(r"A<(\1)>", type)
-    type = arraySimpleRx.sub(r"A<\1>", type)
-    type = structRx.sub(r"S(\1)", type)
-
-    type = type.replace("D", "dict")
-    type = type.replace("A", "array")
-    type = type.replace("S", "struct")
-    return type
-
 def printPrototype(element):
     name = element.attrib.get("name")
 
     args = []
     for arg in element.findall("arg"):
-        type = formatType(arg.attrib.get("type"))
+        type = typeparser.formatType(arg.attrib.get("type"))
         argName = arg.attrib.get("name")
         args.append("%s %s" % (type, argName))
     argString = ", ".join(args)
