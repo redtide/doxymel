@@ -5,11 +5,11 @@ import typeparser
 class TypeParserTestCase(unittest.TestCase):
     def testFormatType(self):
         data = [
-            ("u", "u"),
-            ("(ii)", "struct(ii)"),
-            ("ai", "array<i>"),
-            ("a{si}", "dict<s,i>"),
-            ("a(ii)", "array<struct(ii)>"),
+            ("u", "UInt32"),
+            ("(ii)", "Struct<Int32,Int32>"),
+            ("ai", "Array<Int32>"),
+            ("a{si}", "Dict<String,Int32>"),
+            ("a(ii)", "Array<Struct<Int32,Int32>>"),
             ]
 
         for src, expected in data:
