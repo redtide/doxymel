@@ -7,9 +7,17 @@ from xml.etree import ElementTree as ET
 DOX_TAG = "{http://www.ayatana.org/dbus/dox.dtd}d"
 
 def printDox(element):
+    for doxElement in element.findall(DOX_TAG):
+        print "/**"
+        print doxElement.text
+        print " */"
+
+def printMethodDox(element):
     print "/**"
-    for line in element.findtext(DOX_TAG, "").splitlines():
-        print line
+
+    doxElement = element.find(DOX_TAG)
+    if doxElement is not None:
+        print doxElement.text
 
     for arg in element.findall("arg"):
         name = arg.attrib.get("name")
@@ -64,6 +72,8 @@ def main():
     name = args[0]
 
     tree = ET.parse(name)
+    printDox(tree)
+
     interfaces = tree.findall("interface")
     for interface in interfaces:
         printDox(interface)
@@ -75,7 +85,7 @@ def main():
                 print "signals:"
             elements = interface.findall(name)
             for element in elements:
-                printDox(element)
+                printMethodDox(element)
                 printPrototype(element)
         print "};"
 

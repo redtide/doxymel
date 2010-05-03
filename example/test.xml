@@ -29,6 +29,25 @@ License version 3 and version 2.1 along with this program.  If not, see
 <http://www.gnu.org/licenses/>
 -->
 <node name="/" xmlns:dox="http://www.ayatana.org/dbus/dox.dtd">
+	<dox:d><![CDATA[
+	@mainpage
+	Some content for the main page.
+
+	- @ref org.ayatana.dbusmenu
+	- @ref contact
+	- @ref credits
+	]]>
+	</dox:d>
+	<dox:d><![CDATA[
+	@page contact Contact us
+	Some contact page.
+	]]>
+	</dox:d>
+	<dox:d><![CDATA[
+	@page credits Credits
+	Some credit page.
+	]]>
+	</dox:d>
 	<interface name="org.ayatana.dbusmenu">
 		<dox:d><![CDATA[
 The goal of this DBus interface is to be able to pass menu items through DBus.
