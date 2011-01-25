@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 
 import typeparser
 
-DOX_TAG = "{http://www.ayatana.org/dbus/dox.dtd}d"
+DOX_TAG = "{http://www.canonical.com/dbus/dox.dtd}d"
 
 def printDox(element):
     for doxElement in element.findall(DOX_TAG):
