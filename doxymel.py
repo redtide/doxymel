@@ -40,6 +40,22 @@ def printPrototype(element):
 
     print "void %s(%s);" % (name, argString)
 
+def printPropertyDox(element):
+    name = element.attrib.get("name")
+    type_ = typeparser.formatType(element.attrib.get("type"))
+    access = element.attrib.get("access")
+    print "/**"
+    print "@property %s" % name
+
+    doxElement = element.find(DOX_TAG)
+    if doxElement is not None:
+        print doxElement.text
+    print
+    print " @par Access:"
+    print access
+    print " */"
+    print "Q_PROPERTY(%s %s)" % (type_, name)
+
 def main():
     parser = OptionParser("usage: %prog [options] <path/to/dbus.xml>")
     (options, args) = parser.parse_args()
@@ -54,13 +70,17 @@ def main():
         name = interface.attrib.get("name")
         print "class %s {" % name
         print "public:"
-        for name in "property", "method", "signal":
+        for name in "method", "signal":
             if name == "signal":
                 print "signals:"
             elements = interface.findall(name)
             for element in elements:
                 printMethodDox(element)
                 printPrototype(element)
+
+        elements = interface.findall("property")
+        for element in elements:
+            printPropertyDox(element)
         print "};"
 
     return 0

@@ -165,6 +165,12 @@ from item @a id has changed to @a value.
 			<arg type="v" name="value" direction="out" />
 		</signal>
 
+		<property name="Accelerate" type="u" access="read">
+			<dox:d>
+				Documentation for the Accelerate property.
+			</dox:d>
+		</property>
+
 		<signal name="ItemUpdated">
 <dox:d><![CDATA[
 Triggered by the application to notify the applet all properties of item
