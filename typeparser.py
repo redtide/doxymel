@@ -72,32 +72,33 @@ def convert_complex_type(subsig):
 def convert_simple_type(c):
     result = None
 
-    if c == 'n':
-        result = 'Int16'
-    elif c == 'q':
-        result = 'UInt16'
-    elif c == 'i':
-        result = 'Int32'
-    elif c == 'u':
-        result = 'UInt32'
-    elif c == 'x':
-        result = 'Int64'
-    elif c == 't':
-        result = 'UInt64'
-    elif c == 's':
-        result = 'String'
-    elif c == 'b':
-        result = 'Boolean'
-    elif c == 'y':
-        result = 'Byte'
-    elif c == 'o':
-        result = 'ObjectPath'
-    elif c == 'g':
-        result = 'Signature'
-    elif c == 'd':
-        result = 'Double'
-    elif c == 'v':
-        result = 'Variant'
+    match c:
+        case 'n':
+            result = 'Int16'
+        case 'q':
+            result = 'UInt16'
+        case 'i':
+            result = 'Int32'
+        case 'u':
+            result = 'UInt32'
+        case 'x':
+            result = 'Int64'
+        case 't':
+            result = 'UInt64'
+        case 's':
+            result = 'String'
+        case 'b':
+            result = 'Boolean'
+        case 'y':
+            result = 'Byte'
+        case 'o':
+            result = 'ObjectPath'
+        case 'g':
+            result = 'Signature'
+        case 'd':
+            result = 'Double'
+        case 'v':
+            result = 'Variant'
 
     return result
 
