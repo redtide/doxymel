@@ -51,10 +51,9 @@ def printPropertyDox(element):
     if doxElement is not None:
         print(doxElement.text)
     print()
-    print(" @par Access:")
-    print(access)
+    print(" @par Access: %s" % access)
     print(" */")
-    print("Q_PROPERTY(%s %s)" % (type_, name))
+    print("Q_PROPERTY(%s %s %s %s)" % (type_, name, access.upper(), name.lower()))
 
 def main():
     parser = OptionParser("usage: %prog [options] <path/to/dbus.xml>")
